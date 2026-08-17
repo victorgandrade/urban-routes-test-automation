@@ -1,6 +1,10 @@
 import data
 import helpers
 
+from selenium import webdriver
+from pages import UrbanRoutesPage
+
+
 class TestUrbanRoutes:
 
     @classmethod
@@ -8,45 +12,65 @@ class TestUrbanRoutes:
         if helpers.is_url_reachable(data.URBAN_ROUTES_URL):
             print("Conectado ao servidor Urban Routes")
         else:
-            print("Não foi possível conectar ao Urban Routes. Verifique se o servidor está ligado e ainda em execução.")
+            print(
+                "Não foi possível conectar ao Urban Routes. "
+                "Verifique se o servidor está ligado e ainda em execução."
+            )
+
+        from selenium.webdriver import DesiredCapabilities
+
+        capabilities = DesiredCapabilities.CHROME
+        capabilities["goog:loggingPrefs"] = {'performance': 'ALL'}
+
+        cls.driver = webdriver.Chrome()
+        cls.driver.get(data.URBAN_ROUTES_URL)
+
+        cls.routes_page = UrbanRoutesPage(cls.driver)
 
     def test_set_route(self):
-        # Adicionar em S8
-        print("função criada para definir a rota")
-        pass
+        self.routes_page.set_route(
+            data.ADDRESS_FROM,
+            data.ADDRESS_TO
+        )
+
+        assert self.routes_page.get_from() == data.ADDRESS_FROM
+        assert self.routes_page.get_to() == data.ADDRESS_TO
 
     def test_select_plan(self):
-        # Adicionar em S8
-        print("função criada para selecionar o plano")
-        pass
+        self.routes_page.select_comfort_plan()
 
     def test_fill_phone_number(self):
-        # Adicionar em S8
-        print("função criada para preencher o número de telefone")
-        pass
+        self.routes_page.fill_phone_number(
+            data.PHONE_NUMBER,
+            self.driver
+        )
 
     def test_fill_card(self):
-        # Adicionar em S8
-        print("função criada para preencher o cartão")
-        pass
+        self.routes_page.fill_card(
+            data.CARD_NUMBER,
+            data.CARD_CODE
+        )
 
     def test_comment_for_driver(self):
-        # Adicionar em S8
-        print("função criada para adicionar comentário para o motorista")
-        pass
+        self.routes_page.write_comment_for_driver(
+            data.MESSAGE_FOR_DRIVER
+        )
 
     def test_order_blanket_and_handkerchiefs(self):
-        # Adicionar em S8
-        print("função criada para pedir cobertor e lenços")
-        pass
+        self.routes_page.order_blanket_and_handkerchiefs()
+
+        assert self.routes_page.get_blanket_status() == True
 
     def test_order_2_ice_creams(self):
-        # Adicionar em S8
-        for i in range(2):
-            # Adicionar em S8
-            pass
+        self.routes_page.order_ice_cream(2)
+
+        assert self.routes_page.get_ice_cream_count() == '2'
 
     def test_car_search_model_appears(self):
-        # Adicionar em S8
-        print("função criada para verificar se o modelo do carro aparece")
-        pass
+        self.routes_page.order_taxi()
+
+        assert self.routes_page.get_car_search_modal() != ''
+
+    @classmethod
+    def teardown_class(cls):
+        cls.driver.quit()
