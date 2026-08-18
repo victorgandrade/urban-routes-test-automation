@@ -8,172 +8,102 @@ import helpers
 class UrbanRoutesPage:
 
     # Localizadores
-    from_field = (By.ID, 'from')
-    to_field = (By.ID, 'to')
-    button_round = (By.XPATH, '//button[@class="button round"]')
-
-    comfort_plan = (
-        By.XPATH,
-        '//div[@class="tcard" and .//div[@class="tcard-title" and text()="Comfort"]]'
-    )
-
-    active_comfort = (
-        By.XPATH,
-        '//div[@class="tcard active" and .//div[@class="tcard-title" and text()="Comfort"]]'
-    )
-
-    phone_number_button = (By.CLASS_NAME, 'np-button')
-    phone_number_field = (By.ID, 'phone')
-
-    phone_code_field = (
-        By.XPATH,
-        '//input[@id="code" and @class="input"]'
-    )
-
-    next_button = (
-        By.XPATH,
-        '//button[@class="button full"]'
-    )
-
-    confirm_button = (
-        By.XPATH,
-        '//button[@class="button full" and text()="Confirmar"]'
-    )
-
-    payment_button = (By.CLASS_NAME, 'pp-button')
-
-    add_card_button = (
-        By.XPATH,
-        '//div[@class="pp-title" and text()="Adicionar cartão"]'
-    )
-
-    card_number_field = (
-        By.XPATH,
-        '//input[@id="number"]'
-    )
-
-    card_code_field = (
-        By.XPATH,
-        '//input[@id="code" and @class="card-input"]'
-    )
-
-    card_link_button = (
-        By.XPATH,
-        '//button[@class="button full" and text()="Adicionar"]'
-    )
-
-    close_modal_button = (
-        By.XPATH,
-        '//button[@class="close-button section-close"]'
-    )
-
-    close_payment_modal = (
-        By.XPATH,
-        '//div[@class="section active"][.//div[@class="head" and normalize-space()="Método de pagamento"]]//button[@class="close-button section-close"]'
-    )
-
-    close_add_card_modal = (
-        By.XPATH,
-        '//div[@class="section active"][.//div[@class="pp-title" and normalize-space()="Adicionar cartão"]]//button[@class="close-button section-close"]'
-    )
-
-    comment_field = (By.ID, 'comment')
-
-    blanket_switch = (
-        By.XPATH,
-        '//div[contains(text(),"Cobertor e lençóis")]//following-sibling::div//span[@class="slider round"]'
-    )
-
-    blanket_switch_status = (
-        By.XPATH,
-        '//div[contains(text(),"Cobertor e lençóis")]//following-sibling::div//input[@class="switch-input"]'
-    )
-
-    ice_cream_button = (
-        By.XPATH,
-        '//div[@class="r-counter-label" and contains(text(),"Sorvete")]'
-        '//ancestor::div[@class="r-counter-container"]'
-        '//div[@class="counter-plus"]'
-    )
-
-    ice_cream_count = (
-        By.XPATH,
-        '//div[@class="r-counter-label" and contains(text(),"Sorvete")]'
-        '//ancestor::div[@class="r-counter-container"]'
-        '//div[@class="counter-value"]'
-    )
-
-    order_button = (By.CLASS_NAME, 'smart-button')
-    car_search_modal = (By.CLASS_NAME, 'order-header-title')
+    FROM_FIELD = (By.ID, 'from')
+    TO_FIELD = (By.ID, 'to')
+    BUTTON_ROUND = (By.XPATH, '//button[@class="button round"]')
+    COMFORT_PLAN = (By.XPATH, '//div[contains(@class,"tcard") and .//div[@class="tcard-title" and text()="Comfort"]]')
+    ACTIVE_COMFORT = (By.XPATH, '//div[@class="tcard active" and .//div[@class="tcard-title" and text()="Comfort"]]')
+    PHONE_NUMBER_BUTTON = (By.CLASS_NAME, 'np-button')
+    PHONE_NUMBER_FIELD = (By.ID, 'phone')
+    PHONE_CODE_FIELD = (By.XPATH, '//input[@id="code" and @class="input"]')
+    NEXT_BUTTON = (By.XPATH, '//button[@class="button full"]')
+    CONFIRM_BUTTON = (By.XPATH, '//button[@class="button full" and text()="Confirmar"]')
+    PAYMENT_BUTTON = (By.CLASS_NAME, 'pp-button')
+    ADD_CARD_BUTTON = (By.XPATH, '//div[@class="pp-title" and text()="Adicionar cartão"]')
+    CARD_NUMBER_FIELD = (By.XPATH, '//input[@id="number"]')
+    CARD_CODE_FIELD = (By.XPATH, '//input[@id="code" and @class="card-input"]')
+    CARD_LINK_BUTTON = (By.XPATH, '//button[@class="button full" and text()="Adicionar"]')
+    CLOSE_MODAL_BUTTON = (By.XPATH, '//button[@class="close-button section-close"]')
+    CLOSE_PAYMENT_MODAL = (By.XPATH, '//div[@class="section active"][.//div[@class="head" and normalize-space()="Método de pagamento"]]//button[@class="close-button section-close"]')
+    CLOSE_ADD_CARD_MODAL = (By.XPATH, '//div[@class="section active"][.//div[@class="pp-title" and normalize-space()="Adicionar cartão"]]//button[@class="close-button section-close"]')
+    COMMENT_FIELD = (By.ID, 'comment')
+    BLANKET_SWITCH = (By.XPATH, '//div[contains(text(),"Cobertor e lençóis")]//following-sibling::div//span[@class="slider round"]')
+    BLANKET_SWITCH_STATUS = (By.XPATH, '//div[contains(text(),"Cobertor e lençóis")]//following-sibling::div//input[@class="switch-input"]')
+    ICE_CREAM_BUTTON = (By.XPATH, '//div[@class="r-counter-label" and contains(text(),"Sorvete")]//ancestor::div[@class="r-counter-container"]//div[@class="counter-plus"]')
+    ICE_CREAM_COUNT = (By.XPATH, '//div[@class="r-counter-label" and contains(text(),"Sorvete")]//ancestor::div[@class="r-counter-container"]//div[@class="counter-value"]')
+    ORDER_BUTTON = (By.CLASS_NAME, 'smart-button')
+    CAR_SEARCH_MODAL = (By.CLASS_NAME, 'order-header-title')
 
     def __init__(self, driver):
         self.driver = driver
 
     def wait_for_element(self, locator, timeout=10):
-        return WebDriverWait(self.driver, timeout).until(
-            EC.presence_of_element_located(locator)
-        )
+        return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
 
     def wait_for_clickable(self, locator, timeout=10):
-        return WebDriverWait(self.driver, timeout).until(
-            EC.element_to_be_clickable(locator)
-        )
+        return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
 
     # Definir endereço
     def set_from(self, address):
-        self.wait_for_element(self.from_field).send_keys(address)
+        self.wait_for_element(self.FROM_FIELD).send_keys(address)
 
     def set_to(self, address):
-        self.wait_for_element(self.to_field).send_keys(address)
+        self.wait_for_element(self.TO_FIELD).send_keys(address)
 
     def get_from(self):
-        return self.wait_for_element(self.from_field).get_attribute('value')
+        return self.wait_for_element(self.FROM_FIELD).get_attribute('value')
 
     def get_to(self):
-        return self.wait_for_element(self.to_field).get_attribute('value')
+        return self.wait_for_element(self.TO_FIELD).get_attribute('value')
 
     def set_route(self, from_address, to_address):
         self.set_from(from_address)
         self.set_to(to_address)
-        self.wait_for_clickable(self.button_round).click()
+        self.wait_for_clickable(self.BUTTON_ROUND).click()
 
     # Selecionar plano
     def select_comfort_plan(self):
-        comfort = self.wait_for_element(self.comfort_plan)
+        comfort = self.wait_for_element(self.COMFORT_PLAN)
 
         if 'active' not in comfort.get_attribute('class'):
             comfort.click()
 
+    def get_comfort_status(self):
+        return self.wait_for_element(self.ACTIVE_COMFORT) is not None
+
     # Preencher telefone
     def fill_phone_number(self, phone_number, driver):
-        self.wait_for_clickable(self.phone_number_button).click()
-        self.wait_for_element(self.phone_number_field).send_keys(phone_number)
-        self.wait_for_clickable(self.next_button).click()
+        self.wait_for_clickable(self.PHONE_NUMBER_BUTTON).click()
+        self.wait_for_element(self.PHONE_NUMBER_FIELD).send_keys(phone_number)
+        self.wait_for_clickable(self.NEXT_BUTTON).click()
 
         code = helpers.retrieve_phone_code(driver)
 
-        self.wait_for_element(self.phone_code_field).send_keys(code)
-        self.wait_for_clickable(self.confirm_button).click()
+        self.wait_for_element(self.PHONE_CODE_FIELD).send_keys(code)
+        self.wait_for_clickable(self.CONFIRM_BUTTON).click()
+
+    def get_phone_number(self):
+        return self.wait_for_element(self.PHONE_NUMBER_FIELD).get_attribute('value')
 
     # Adicionar cartão
     def fill_card(self, card_number, card_code):
         from selenium.webdriver.common.keys import Keys
         import time
 
-        button = self.wait_for_element(self.payment_button)
+        button = self.wait_for_element(self.PAYMENT_BUTTON)
         self.driver.execute_script("arguments[0].click();", button)
 
         time.sleep(1)
 
-        add_card = self.wait_for_clickable(self.add_card_button)
+        add_card = self.wait_for_clickable(self.ADD_CARD_BUTTON)
         self.driver.execute_script("arguments[0].click();", add_card)
 
         time.sleep(1)
 
-        card_field = self.wait_for_clickable(self.card_number_field)
+        card_field = self.wait_for_clickable(self.CARD_NUMBER_FIELD)
         card_field.send_keys(card_number)
 
-        code_field = self.wait_for_clickable(self.card_code_field)
+        code_field = self.wait_for_clickable(self.CARD_CODE_FIELD)
         code_field.send_keys(card_code)
 
         # Remove o foco do campo CVV
@@ -181,45 +111,51 @@ class UrbanRoutesPage:
 
         time.sleep(1)
 
-        add_button = self.wait_for_clickable(self.card_link_button)
+        add_button = self.wait_for_clickable(self.CARD_LINK_BUTTON)
         add_button.click()
 
         time.sleep(1)
 
         # Fecha a janela "Método de pagamento"
-        close_payment = self.wait_for_clickable(self.close_payment_modal)
+        close_payment = self.wait_for_clickable(self.CLOSE_PAYMENT_MODAL)
         self.driver.execute_script("arguments[0].click();", close_payment)
 
         time.sleep(1)
 
+    def get_payment_method(self):
+        return self.wait_for_element(self.PAYMENT_BUTTON).text
+
     # Comentário para o motorista
     def write_comment_for_driver(self, comment):
-        self.wait_for_element(self.comment_field).send_keys(comment)
+        from selenium.webdriver.common.keys import Keys
+
+        field = self.wait_for_element(self.COMMENT_FIELD)
+        field.send_keys(comment)
+        field.send_keys(Keys.TAB)
+    def get_comment(self):
+        return self.wait_for_element(self.COMMENT_FIELD).get_attribute('value')
 
     # Cobertor e lenços
     def order_blanket_and_handkerchiefs(self):
-        switch = self.wait_for_element(self.blanket_switch)
+        switch = self.wait_for_element(self.BLANKET_SWITCH)
         self.driver.execute_script("arguments[0].click();", switch)
 
     def get_blanket_status(self):
-        return self.wait_for_element(
-            self.blanket_switch_status
-        ).is_selected()
+        return self.wait_for_element(self.BLANKET_SWITCH_STATUS).is_selected()
 
     # Sorvete
     def order_ice_cream(self, count):
         for i in range(count):
-            self.wait_for_clickable(self.ice_cream_button).click()
+            button = self.wait_for_element(self.ICE_CREAM_BUTTON)
+            self.driver.execute_script("arguments[0].scrollIntoView();", button)
+            button.click()
 
     def get_ice_cream_count(self):
-        return self.wait_for_element(self.ice_cream_count).text
+        return self.wait_for_element(self.ICE_CREAM_COUNT).text
 
     # Pedir táxi
     def order_taxi(self):
-        self.wait_for_clickable(self.order_button).click()
+        self.wait_for_clickable(self.ORDER_BUTTON).click()
 
     def get_car_search_modal(self):
-        return self.wait_for_element(
-            self.car_search_modal,
-            timeout=15
-        ).text
+        return self.wait_for_element(self.CAR_SEARCH_MODAL, timeout=15).text
